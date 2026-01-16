@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding: 0 2rem;
+        }
+
+        .nav-link {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .nav-link:hover {
+            color: #374151;
+        }
+
+        .nav-link.active {
+            color: #ef4444;
+        }
+
+        .hero-section {
+            position: relative;
+            height: 600px;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a7b 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 58, 95, 0.9) 0%, rgba(45, 90, 123, 0.8) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            max-width: 900px;
+            padding: 0 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+
+        .get-started-btn {
+            background: white;
+            color: #1e3a5f;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .get-started-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+
+
+        .features-section {
+            max-width: 1200px;
+            margin: -80px auto 0;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 30;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .feature-card h3 {
+            color: #1f2937;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .tracking-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .tracking-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .tracking-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tracking-header h2 {
+            color: #1f2937;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tracking-header p {
+            color: #6b7280;
+        }
+
+        .tracking-input-group {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tracking-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .tracking-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .track-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .track-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .error {
+            color: #ef4444;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .tracking-results {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #3b82f6;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            color: #2563eb;
+        }
+
+        .tracking-header-result {
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tracking-header-result h2 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .tracking-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .status-delivered {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-transit {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-processing {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+
+        .timeline {
+            margin-top: 2rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-marker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .timeline-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .timeline-dot.completed {
+            background: #3b82f6;
+        }
+
+        .timeline-dot.pending {
+            background: #d1d5db;
+        }
+
+        .timeline-line {
+            width: 2px;
+            flex: 1;
+            background: #d1d5db;
+            min-height: 40px;
+        }
+
+        .timeline-line.completed {
+            background: #3b82f6;
+        }
+
+        .timeline-content h4 {
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-content p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .timeline-content .location {
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        /* Content Pages */
+        .content-page {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .content-card h2 {
+            color: #1f2937;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-card p {
+            color: #4b5563;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            padding: 1.5rem;
+            background: #f9fafb;
+            border-radius: 10px;
+        }
+
+        .contact-item h3 {
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-item p {
+            color: #6b7280;
+            margin: 0.25rem 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .features-section {
+                margin-top: -60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <button class="nav-link active" onclick="showPage('home')">Home</button>
+            <button class="nav-link" onclick="showPage('features')">Features</button>
+            <button class="nav-link" onclick="showPage('about')">About</button>
+            <button class="nav-link" onclick="showPage('contact')">Contact</button>
+        </div>
+    </nav>
+
+    <div id="home-page" class="page">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <!-- Add your background image here -->
+            <!-- <img src="your-truck-image.jpg" alt="Delivery Truck" class="hero-bg"> -->
+            <div class="hero-overlay"></div>
+            
+            <div class="hero-content">
+                <h1>SHIFTING GEARS FOR LIGHTNING-FAST DELIVERIES</h1>
+                <button class="get-started-btn" onclick="scrollToTracking()">Get Started</button>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Fastest Services</h3>
+                    <p>Lightning-fast delivery times with real-time tracking. We prioritize speed without compromising safety and reliability.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3>Secure Tracking</h3>
+                    <p>Advanced GPS tracking system ensures your package location is always accurate and secure throughout the journey.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>24/7 Customer Support</h3>
+                    <p>Our dedicated support team is available round the clock to assist you with any delivery concerns or inquiries.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tracking-section" id="trackingSection">
+            <div class="tracking-card">
+                <div class="tracking-header">
+                    <h2>Track Your Package</h2>
+                    <p>Enter your tracking number to get real-time updates</p>
+                </div>
+                <div class="tracking-input-group">
+                    <input 
+                        type="text" 
+                        id="trackingInput"
+                        class="tracking-input" 
+                        placeholder="Enter tracking number (e.g., TRK123456789)"
+                        onkeypress="if(event.key === 'Enter') trackPackage()"
+                    >
+                    <div id="error" class="error"></div>
+                    <button class="track-btn" onclick="trackPackage()">TRACK NOW</button>
+                </div>
+            </div>
+
+            <div id="tracking-results" class="tracking-results hidden">
+                <button class="back-btn" onclick="resetTracking()">
+                    ← Track Another Package
+                </button>
+                
+                <div class="tracking-header-result">
+                    <h2>Tracking Number: <span id="trackNumber"></span></h2>
+                    <div class="tracking-info">
+                        <div class="info-item">
+                            <span>📍</span>
+                            <span id="currentLocation"></span>
+                        </div>
+                        <div class="info-item">
+                            <span>🚚</span>
+                            <span id="carrier"></span>
+                        </div>
+                        <div class="info-item">
+                            <span>📅</span>
+                            <span id="estimatedDelivery"></span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <span id="statusBadge" class="status-badge"></span>
+                    </div>
+                </div>
+
+                <div class="timeline" id="timeline"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="features-page" class="page hidden">
+        <div class="content-page">
+            <div class="content-card">
+                <h2>Our Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⏱️</div>
+                        <h3>Real-Time Tracking</h3>
+                        <p>Get instant updates on your package location and status with our advanced tracking system powered by GPS technology.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔔</div>
+                        <h3>SMS Notifications</h3>
+                        <p>Receive automatic text alerts for important delivery milestones and updates directly to your mobile phone.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌍</div>
+                        <h3>Global Coverage</h3>
+                        <p>Track shipments worldwide with support for all major carriers and logistics providers across continents.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Secure Platform</h3>
+                        <p>Your tracking information is protected with enterprise-grade security measures and encrypted connections.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Delivery History</h3>
+                        <p>Access complete tracking history and past delivery records anytime with detailed logs and reports.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Fast & Reliable</h3>
+                        <p>Our system provides accurate tracking data updated every few minutes with 99.9% uptime guarantee.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="about-page" class="page hidden">
+        <div class="content-page">
+            <div class="content-card">
+                <h2>About SwiftTrack</h2>
+                <p>SwiftTrack is a leading delivery tracking platform that provides real-time visibility into your shipments. We partner with major carriers worldwide to give you accurate, up-to-date information about your packages.</p>
+                
+                <p>Our mission is to make package tracking simple, reliable, and accessible to everyone. With advanced technology and a user-friendly interface, we ensure you're always informed about your deliveries.</p>
+                
+                <p>Founded in 2026, we've processed over 10 million tracking requests and continue to expand our services globally. We work with carriers including DHL, FedEx, UPS, USPS, and many regional delivery services.</p>
+                
+                <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #1f2937;">Why Choose Us?</h3>
+                <ul style="color: #4b5563; line-height: 2;">
+                    <li>✓ 24/7 tracking availability</li>
+                    <li>✓ Support for 100+ carriers worldwide</li>
+                    <li>✓ Real-time notifications and alerts</li>
+                    <li>✓ Mobile-friendly responsive design</li>
+                    <li>✓ No registration required</li>
+                    <li>✓ Completely free to use</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-page" class="page hidden">
+        <div class="content-page">
+            <div class="content-card">
+                <h2>Contact Us</h2>
+                <p>Have questions or need assistance? We're here to help! Reach out to our customer support team through any of the channels below.</p>
+                
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <h3>📧 Email</h3>
+                        <p>toto@gmail.com</p>
+                        <p style="font-size: 0.85rem; margin-top: 0.5rem;">We typically respond within 24 hours</p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>📞 Phone</h3>
+                        <p>0991234587</p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>📍 Address</h3>
+                        <p>Brgy San Jose</p>
+                        <p>San Antonio</p>
+                        <p>Quezon</p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>🕐 Business Hours</h3>
+                        <p>Monday - Friday</p>
+                        <p>9:00 AM - 6:00 PM </p>
+                        <p style="margin-top: 0.5rem;">Saturday - Sunday</p>
+                        <p>10:00 AM - 4:00 PM </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToTracking() {
+            document.getElementById('trackingSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+            
+            document.getElementById(pageName + '-page').classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function trackPackage() {
+            const trackingNumber = document.getElementById('trackingInput').value.trim();
+            const errorDiv = document.getElementById('error');
+            
+            if (!trackingNumber) {
+                errorDiv.textContent = 'Please enter a tracking number';
+                return;
+            }
+            
+            errorDiv.textContent = '';
+    
+            alert('Tracking number: ' + trackingNumber + '\n\nConnect this to your PHP backend to fetch real tracking data.');
+        }
+
+        function resetTracking() {
+            document.getElementById('tracking-results').classList.add('hidden');
+            document.getElementById('trackingInput').value = '';
+            document.getElementById('error').textContent = '';
+        }
+    </script>
+</body>
+</html>
